@@ -10,10 +10,10 @@ from flake8_aaa.helpers import find_test_functions, is_test_file
 def example_file(tmpdir):
     """
     Returns:
-        file: Test file like argparse returns which has a 'name' property. This
-        is deliberately named to not look like a test file - which means that
-        the command line functionality of running files regardless of if
-        they're a test file or not can be tested.
+        Test file like argparse returns which has a 'name' property. This is
+        deliberately named to not look like a test file - which means that the
+        command line functionality of running files regardless of if they're a
+        test file or not can be tested.
     """
     f = tmpdir.join('example_file.py')
     f.write("""
@@ -27,13 +27,13 @@ def test_other():
     return f
 
 
-def test_example_file_is_test(example_file):
+def test_example_file_is_test(example_file) -> None:
     result = is_test_file(example_file.name)
 
     assert result is False
 
 
-def test_example_file_has_functions(example_file):
+def test_example_file_has_functions(example_file) -> None:
     lines = example_file.readlines()
     tree = ast.parse(''.join(lines))
 
@@ -45,7 +45,7 @@ def test_example_file_has_functions(example_file):
 # --- TESTS ---
 
 
-def test(example_file, capsys):
+def test(example_file, capsys) -> None:
     with example_file.open() as f:
 
         result = do_command_line(f)
@@ -66,4 +66,6 @@ def test(example_file, capsys):
     1 | ERROR
 ======+========================================================================
         FAILED with 2 ERRORS
+
+AAA01: https://flake8-aaa.rtfd.io/en/stable/error_codes/AAA01-no-act-block-found-in-test.html
 '''.lstrip()

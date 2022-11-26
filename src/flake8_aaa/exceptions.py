@@ -1,19 +1,4 @@
-import typing
-
-Flake8Error = typing.NamedTuple(
-    'Flake8Error', [
-        ('line_number', int),
-        ('offset', int),
-        ('text', str),
-        ('checker_cls', type),
-    ]
-)
-
-AAAError = typing.NamedTuple('AAAError', [
-    ('line_number', int),
-    ('offset', int),
-    ('text', str),
-])
+from error_codes import AAAError, Flake8Error
 
 
 class Flake8AAAException(Exception):
@@ -34,14 +19,8 @@ class EmptyBlock(Flake8AAAException):
 
 
 class ValidationError(Flake8AAAException):
-    """
-    Attributes:
-        line_number (int)
-        offset (int)
-        text (str)
-    """
 
-    def __init__(self, line_number, offset, text):
+    def __init__(self, line_number: int, offset: int, text: str) -> None:
         self.line_number = line_number
         self.offset = offset
         self.text = text
@@ -49,8 +28,7 @@ class ValidationError(Flake8AAAException):
     def to_flake8(self, checker_cls: type) -> Flake8Error:
         """
         Args:
-            checker_cls: Class performing the check to be passed back to
-                flake8.
+            checker_cls: Class performing the check to be passed back to flake8.
         """
         return Flake8Error(
             line_number=self.line_number,
